@@ -1,0 +1,60 @@
+<select id="type-of-page">
+    <option disabled="disabled" selected="selected" value=""> - - Type of Page - - </option>
+    <option value="video">Video Page</option>
+    <option value="timeline">Timeline Page</option>
+</select>
+<br />
+<textarea id="html"></textarea>
+<br /><br />
+<button class="btn" id="parse">Parse HTML</button>
+<div id="input-area"></div>
+<div style="display: none" id="html-content"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    function ls(location) {
+        (location == undefined ? location = document : location = location);
+        var divs = location.getElementsByTagName('div');
+        for (var i = 0; i < divs.length; i++) {
+            console.log('Id: ' + divs[i].getAttribute('id') + ' Class: ' + divs[i].getAttribute('class'));
+        }
+    }
+    $('#parse').on('click', function() {
+        if(document.getElementById("type-of-page").value != "" && document.getElementById("html").value != "") {
+            var html = document.getElementById("html");
+            var htmlContent = document.getElementById("html-content");
+            htmlContent.innerHTML = html.value;
+            html.value = "";
+            switch(document.getElementById('type-of-page').value) {
+                case 'video':
+                    break;
+                case 'timeline':
+                    var tempHTML = "";
+                    var events = htmlContent.getElementsByClassName('events-content')[0].getElementsByTagName('ol')[0].getElementsByTagName('li');
+                    for (var i = 0; i < events.length; i++) {
+                        tempHTML += buildEvent(events[i]);
+                    }
+                    tempHTML += "<br /><button class=\"btn\" id=\"build-timeline\">Build HTML</button>";
+                    document.getElementById("input-area").innerHTML = tempHTML;
+                    break;
+                default:
+                    break;
+            }
+        } else if (document.getElementById("type-of-page").value == "") {
+            alert("Select what type of page!");
+        } else {
+            alert("Add html to the text box");
+        }
+    });
+
+    function buildEvent(event) {
+        var html = '<div class="event-entry champ-card">';
+        var year = event.getElementsByTagName('h2')[0].innerHTML;
+        html += '<input maxlength="4" value="' + year + '"><br /><br />';
+        var points = event.getElementsByTagName('p');
+        for(var i = 0; i < points.length; i++) {
+            html += '<textarea>' + points[i].innerHTML + '</textarea><br /><br />'
+        }
+        html += '</div>';
+        return html;
+    }
+</script>
