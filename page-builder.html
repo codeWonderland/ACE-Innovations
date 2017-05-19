@@ -58,7 +58,7 @@
                     var tempHTML = "";
                     var events = htmlContent.getElementsByClassName('events-content')[0].getElementsByTagName('ol')[0].getElementsByTagName('li');
                     for (var i = 0; i < events.length; i++) {
-                        tempHTML += buildEvent(events[i]);
+                        tempHTML += buildEvent(events[i], i);
                     }
                     tempHTML += "<br /><button class=\"btn\" id=\"build-timeline\" onclick=\"buildTimelineHTML()\">Build HTML</button>";
                     document.getElementById("input-area").innerHTML = tempHTML;
@@ -73,16 +73,41 @@
         }
     });
 
-    function buildEvent(event) {
+    function buildEvent(event, eventIndex) {
         var html = '<div class="event-entry champ-card">';
         var year = event.getElementsByTagName('h2')[0].innerHTML;
         html += '<input maxlength="4" value="' + year + '"><br /><br />';
         var points = event.getElementsByTagName('p');
         for(var i = 0; i < points.length; i++) {
-            html += '<textarea>' + points[i].innerHTML + '</textarea><br /><br />'
+            html += '<textarea>' + points[i].innerHTML + '</textarea>'
+                + '<br /><button class="btn" onclick="newDetail(' + eventIndex + ',' + i + ')">Add</button>' +
+                '<button class="btn" onclick="removeDetail(' + eventIndex + ',' + i + ')">Remove</button><br /><br />';
         }
-        html += '</div>';
+        html += '<button class="btn" onclick="addEvent(this)">Add</button><button class="btn" onclick="deleteEvent(this)">Remove</button></div>';
         return html;
+    }
+
+    function deleteEvent(event) {
+        $(event.parentElement).remove();
+    }
+
+    function newDetail(event,detail) {
+        var events = document.getElementsByClassName('event-entry');
+        $('<textarea></textarea><br />' +
+            '<button class="btn" onclick="newDetail(' + event + ',' + (detail + 1) + ')">Add</button>' +
+            '<button class="btn" onclick="removeDetail(' + event + ',' + (detail + 1) + ')">Remove</button><br /><br />').insertAfter(events[event].getElementsByTagName('br')[4 + (detail * 3)]);
+    }
+
+    function removeDetail(event, detail) {
+        var events = document.getElementsByClassName('event-entry');
+        var details = events[event].getElementsByTagName('textarea');
+        var breaks = events[event].getElementsByTagName('br');
+        $(breaks[(detail + 1) * 3 - 1]).remove();
+        var breaks = events[event].getElementsByTagName('br');
+        $(breaks[(detail + 1) * 3 - 1]).remove();
+        var breaks = events[event].getElementsByTagName('br');
+        $(breaks[(detail + 1) * 3 - 1]).remove();
+        $(details[detail].remove())
     }
 
     function buildTimelineHTML() {
