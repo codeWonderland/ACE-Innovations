@@ -58,7 +58,7 @@
                     var tempHTML = "";
                     var events = htmlContent.getElementsByClassName('events-content')[0].getElementsByTagName('ol')[0].getElementsByTagName('li');
                     for (var i = 0; i < events.length; i++) {
-                        tempHTML += buildEvent(events[i], i);
+                        tempHTML += buildEvent(events[i]);
                     }
                     tempHTML += "<br /><button class=\"btn\" id=\"build-timeline\" onclick=\"buildTimelineHTML()\">Build HTML</button>";
                     document.getElementById("input-area").innerHTML = tempHTML;
@@ -73,41 +73,68 @@
         }
     });
 
-    function buildEvent(event, eventIndex) {
+    function buildEvent(event) {
         var html = '<div class="event-entry champ-card">';
         var year = event.getElementsByTagName('h2')[0].innerHTML;
         html += '<input maxlength="4" value="' + year + '"><br /><br />';
         var points = event.getElementsByTagName('p');
         for(var i = 0; i < points.length; i++) {
-            html += '<textarea>' + points[i].innerHTML + '</textarea>'
-                + '<br /><button class="btn" onclick="newDetail(' + eventIndex + ',' + i + ')">Add</button>' +
-                '<button class="btn" onclick="removeDetail(' + eventIndex + ',' + i + ')">Remove</button><br /><br />';
+            html += '<div><textarea>' + points[i].innerHTML + '</textarea>'
+                + '<br /><button class="btn" onclick="newDetail(this)">Add</button>' +
+                '<button class="btn" onclick="removeDetail(this)">Remove</button>' +
+                '<button class="btn" onclick="moveUp(this)">Up</button>' +
+                '<button class="btn" onclick="moveDown(this)">Down</button>' +
+                '<br /><br /></div>';
         }
-        html += '<button class="btn" onclick="addEvent(this)">Add</button><button class="btn" onclick="deleteEvent(this)">Remove</button></div>';
+        html += '<button class="btn" onclick="addEvent(this)">Add Event</button><button class="btn" onclick="deleteEvent(this)">Remove Event</button>' +
+            '<button class="btn" onclick="moveUp(this)">Up</button>' +
+            '<button class="btn" onclick="moveDown(this)">Down</button>' +
+            '</div>';
         return html;
     }
 
-    function deleteEvent(event) {
-        $(event.parentElement).remove();
+    function moveUp(button) {
+        var prevElement = $(button.parentElement).prev();
+        $(button.parentElement).detach().insertBefore(prevElement);
     }
 
-    function newDetail(event,detail) {
-        var events = document.getElementsByClassName('event-entry');
-        $('<textarea></textarea><br />' +
-            '<button class="btn" onclick="newDetail(' + event + ',' + (detail + 1) + ')">Add</button>' +
-            '<button class="btn" onclick="removeDetail(' + event + ',' + (detail + 1) + ')">Remove</button><br /><br />').insertAfter(events[event].getElementsByTagName('br')[4 + (detail * 3)]);
+    function moveDown(button) {
+        var nextElement = $(button.parentElement).next();
+        $(button.parentElement).detach().insertAfter(nextElement);
     }
 
-    function removeDetail(event, detail) {
-        var events = document.getElementsByClassName('event-entry');
-        var details = events[event].getElementsByTagName('textarea');
-        var breaks = events[event].getElementsByTagName('br');
-        $(breaks[(detail + 1) * 3 - 1]).remove();
-        var breaks = events[event].getElementsByTagName('br');
-        $(breaks[(detail + 1) * 3 - 1]).remove();
-        var breaks = events[event].getElementsByTagName('br');
-        $(breaks[(detail + 1) * 3 - 1]).remove();
-        $(details[detail].remove())
+    function addEvent(button) {
+        $('<div class="event-entry champ-card">' +
+            '<input maxlength="4"><br /><br />' +
+            '<div><textarea></textarea><br />' +
+            '<button class="btn" onclick="newDetail(this)">Add</button>' +
+            '<button class="btn" onclick="removeDetail(this)">Remove</button>' +
+            '<button class="btn" onclick="moveUp(this)">Up</button>' +
+            '<button class="btn" onclick="moveDown(this)">Down</button>' +
+            '<br /><br /></div>' +
+            '<button class="btn" onclick="addEvent(this)">Add Event</button><button class="btn" onclick="deleteEvent(this)">Remove Event</button>' +
+            '<button class="btn" onclick="moveUp(this)">Up</button>' +
+            '<button class="btn" onclick="moveDown(this)">Down</button>' +
+            '</div>').insertAfter(button.parentElement);
+    }
+
+    function deleteEvent(button) {
+        $(button.parentElement).remove();
+    }
+
+    function newDetail(button) {
+        $('<div><textarea></textarea><br />' +
+            '<button class="btn" onclick="newDetail(this)">Add</button>' +
+            '<button class="btn" onclick="removeDetail(this)">Remove</button>' +
+            '<button class="btn" onclick="moveUp(this)">Up</button>' +
+            '<button class="btn" onclick="moveDown(this)">Down</button>' +
+            '<br /><br /></div>').insertAfter(button.parentElement);
+    }
+
+    function removeDetail(button) {
+        if(button.parentElement.parentElement.getElementsByTagName('textarea').length >= 2) {
+            $(button.parentElement).remove();
+        }
     }
 
     function buildTimelineHTML() {
