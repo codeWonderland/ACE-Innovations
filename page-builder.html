@@ -69,7 +69,32 @@
         } else if (document.getElementById("type-of-page").value == "") {
             alert("Select what type of page!");
         } else {
-            alert("Add html to the text box");
+            var html = document.getElementById("html");
+            var htmlContent = document.getElementById("html-content");
+            htmlContent.innerHTML = html.value;
+            html.value = "";
+            switch(document.getElementById('type-of-page').value) {
+                case 'video':
+                    break;
+                case 'timeline':
+                    var tempHTML = '<div class="event-entry champ-card">' +
+                        '<input maxlength="4"><br /><br />' +
+                        '<div><textarea></textarea><br />' +
+                        '<button class="btn" onclick="newDetail(this)">Add</button>' +
+                        '<button class="btn" onclick="removeDetail(this)">Remove</button>' +
+                        '<button class="btn" onclick="moveUp(this)">Up</button>' +
+                        '<button class="btn" onclick="moveDown(this)">Down</button>' +
+                        '<br /><br /></div>' +
+                        '<button class="btn" onclick="addEvent(this)">Add Event</button><button class="btn" onclick="deleteEvent(this)">Remove Event</button>' +
+                        '<button class="btn" onclick="moveUp(this)">Up</button>' +
+                        '<button class="btn" onclick="moveDown(this)">Down</button>' +
+                        '</div>' +
+                        '<br /><button class=\"btn\" id=\"build-timeline\" onclick=\"buildTimelineHTML()\">Build HTML</button>';
+                    document.getElementById("input-area").innerHTML = tempHTML;
+                    break;
+                default:
+                    break;
+            }
         }
     });
 
