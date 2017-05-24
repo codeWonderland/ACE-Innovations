@@ -95,6 +95,28 @@
             html.value = "";
             switch(document.getElementById('type-of-page').value) {
                 case 'video':
+                    var featurehtml = "<div style='height: 610px;' class='feature-video champ-card'><h2>Feature Video</h2>";
+                    for (var i = 0; i < 4; i++) {
+                        if(i % 2 == 0) {
+                            featurehtml += "<div style='float: left; margin: 15px; margin-left: 100px' class='video-entry champ-card'>";
+                        } else {
+                            featurehtml += "<div style='float: left; margin: 15px;' class='video-entry champ-card'>";
+                        }
+                        if (i == 0) {
+                            featurehtml += "<h3>Feature Video Main Video</h3>";
+                        } else {
+                            featurehtml += "<h3>Feature Video Preview " + i + "</h3>";
+                        }
+                        featurehtml += "<p style='float: left'>URL:</p><input style='float: left' class='video-url'  /><br /><br />";
+                        featurehtml += "<p style='float: left; padding-bottom: 0;'>Thumbnail URL:</p><input style='float: left' class='video-thumb-url'  /><br /><p style='float:left; font-size: 10px; margin-top:0;'>Note: Make sure thumbnail is 16:9</p><br /><br />";
+                        featurehtml += "<p style='float: left'>Description:</p><input style='float: left' class='video-description' maxlength='30'  />";
+                        featurehtml += "</div>";
+                        if(i % 2) {
+                            featurehtml+="<br /><br />";
+                        }
+                    }
+                    featurehtml += "<button style='float: left; margin-left: 20px; margin-top: 10px;' class='btn' onclick='addNewSection(this)'>Add Section</button></div>";
+                    document.getElementById('input-area').innerHTML = featurehtml;
                     break;
                 case 'timeline':
                     var tempHTML = '<div class="event-entry champ-card">' +
