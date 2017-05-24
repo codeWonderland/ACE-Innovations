@@ -36,29 +36,13 @@
         </div> <!-- .events-content -->
     </section>
 </div>
-<div style="display: none" id="video-html">
+<div style="display: none" id="video-page-html">
     <div class="video-feature">
         <div class="video" id="feature-video"></div>
-        <div class="feat-objects">
-            <p class="video-url"></p>
-            <p class="thumbnail-url"></p> <!--Get url from https://developer.vimeo.com/api/playground/videos/28071091/pictures-->
-            <p class="video-description"></p>
-        </div>
-        <div class="feat-objects">
-            <p class="video-url"></p>
-            <p class="thumbnail-url"></p>
-            <p class="video-description"></p>
-        </div>
-        <div class="feat-objects">
-            <p class="video-url"></p>
-            <p class="thumbnail-url"></p>
-            <p class="video-description"></p>
-        </div>
-        <div class="feat-objects">
-            <p class="video-url">/p>
-            <p class="thumbnail-url"></p>
-            <p class="video-description"></p>
-        </div>
+        <div class="feat-objects"></div>
+        <div class="feat-objects"></div>
+        <div class="feat-objects"></div>
+        <div class="feat-objects"></div>
         <div id="preview-container"></div>
     </div>
     <br /><br />
@@ -87,7 +71,7 @@
                     for (var i = 0; i < sections.length; i++) {
                         tempHTML += buildSection(sections[i]);
                     }
-                    tempHTML += "<br /><button class=\"btn\" id=\"build-video\" onclick=\"buildTimelineHTML()\">Build HTML</button>";
+                    tempHTML += "<br /><button class=\"btn\" id=\"build-video\" onclick=\"buildVideoHTML()\">Build HTML</button>";
                     document.getElementById("input-area").innerHTML = tempHTML;
                     break;
                 case 'timeline':
@@ -241,6 +225,40 @@
         timelineHTML.getElementsByClassName('events-content')[0].getElementsByTagName('ol')[0].innerHTML = tempHTML;
         $("<br /><br /><textarea id=\"output-html\"></textarea>").insertAfter('#build-timeline');
         document.getElementById("output-html").value = timelineHTML.innerHTML;
+    }
+
+    function buildVideoHTML() {
+        var videoHTML = document.getElementById('video-page-html');
+        var feats = videoHTML.getElementsByClassName('video-feature')[0].getElementsByClassName('feat-objects');
+        var featsConContent = document.getElementsByClassName('feature-video')[0].getElementsByClassName('video-entry');
+        for (var i = 0; i < 4; i++) {
+            feats[i].innerHTML = '<p class="video-url">' + featsConContent[i].getElementsByClassName('video-url')[0].value + '</p>' +
+                '<p class="thumbnail-url">' + featsConContent[i].getElementsByClassName('video-thumb-url')[0].value + '</p>' +
+                '<p class="video-description">' + featsConContent[i].getElementsByClassName('video-description')[0].value + '</p>';
+        }
+        var htmlOutput = videoHTML.innerHTML;
+        var sections = document.getElementsByClassName('section-video');
+        for(var i = 0; i < sections.length; i++) {
+            htmlOutput += '<div class="video-section champ-card">' +
+                '<div class="section-panel-left">' +
+                '<h2>' + sections[i].getElementsByClassName('section-title')[0].value + '</h2><br />' +
+                '<div class="video-section-main video"></div>' +
+                '</div>' +
+                '<div class="section-panel-right"></div>';
+            var entries = sections[i].getElementsByClassName('video-entry');
+            for(var j = 0; j < 4; j++) {
+                htmlOutput += '<div class="video-section-object">' +
+                    '<p class="video-url-section">' + entries[j].getElementsByClassName('video-url')[0].value + '</p>' +
+                    '<p class="thumbnail-url-section">' + entries[j].getElementsByClassName('video-thumb-url')[0].value + '</p>' +
+                    '<p class="video-description-section">' + entries[j].getElementsByClassName('video-description')[0].value + '</p>' +
+                    '</div>';
+            }
+            htmlOutput += '</div><br /><br />';
+        }
+
+
+        $("<br /><br /><textarea id=\"output-html\"></textarea>").insertAfter('#build-video');
+        document.getElementById("output-html").value = htmlOutput;
     }
 
     function buildFeature(feature) {
