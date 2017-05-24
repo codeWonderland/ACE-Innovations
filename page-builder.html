@@ -36,6 +36,33 @@
         </div> <!-- .events-content -->
     </section>
 </div>
+<div style="display: none" id="video-html">
+    <div class="video-feature">
+        <div class="video" id="feature-video"></div>
+        <div class="feat-objects">
+            <p class="video-url"></p>
+            <p class="thumbnail-url"></p> <!--Get url from https://developer.vimeo.com/api/playground/videos/28071091/pictures-->
+            <p class="video-description"></p>
+        </div>
+        <div class="feat-objects">
+            <p class="video-url"></p>
+            <p class="thumbnail-url"></p>
+            <p class="video-description"></p>
+        </div>
+        <div class="feat-objects">
+            <p class="video-url"></p>
+            <p class="thumbnail-url"></p>
+            <p class="video-description"></p>
+        </div>
+        <div class="feat-objects">
+            <p class="video-url">/p>
+            <p class="thumbnail-url"></p>
+            <p class="video-description"></p>
+        </div>
+        <div id="preview-container"></div>
+    </div>
+    <br /><br />
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
     function ls(location) {
@@ -53,6 +80,15 @@
             html.value = "";
             switch(document.getElementById('type-of-page').value) {
                 case 'video':
+                    var tempHTML = "";
+                    var feature = htmlContent.getElementsByClassName('video-feature')[0];
+                    tempHTML += buildFeature(feature);
+                    var sections = htmlContent.getElementsByClassName('video-section');
+                    for (var i = 0; i < sections.length; i++) {
+                        tempHTML += buildSection(sections[i]);
+                    }
+                    tempHTML += "<br /><button class=\"btn\" id=\"build-video\" onclick=\"buildTimelineHTML()\">Build HTML</button>";
+                    document.getElementById("input-area").innerHTML = tempHTML;
                     break;
                 case 'timeline':
                     var tempHTML = "";
@@ -81,13 +117,14 @@
                         '<input maxlength="4"><br /><br />' +
                         '<div><textarea></textarea><br />' +
                         '<button class="btn" onclick="newDetail(this)">Add</button>' +
-                        '<button class="btn" onclick="removeDetail(this)">Remove</button>' +
-                        '<button class="btn" onclick="moveUp(this)">Up</button>' +
-                        '<button class="btn" onclick="moveDown(this)">Down</button>' +
+                        '<button class="btn" onclick="removeDetail(this)" style="margin-left: 5px;">Remove</button>' +
+                        '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' +
+                        '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' +
                         '<br /><br /></div>' +
-                        '<button class="btn" onclick="addEvent(this)">Add Event</button><button class="btn" onclick="deleteEvent(this)">Remove Event</button>' +
-                        '<button class="btn" onclick="moveUp(this)">Up</button>' +
-                        '<button class="btn" onclick="moveDown(this)">Down</button>' +
+                        '<button class="btn" onclick="addEvent(this)">Add Event</button>' +
+                        '<button class="btn" onclick="deleteEvent(this)" style="margin-left: 5px;">Remove Event</button>' +
+                        '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' +
+                        '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' +
                         '</div>' +
                         '<br /><button class=\"btn\" id=\"build-timeline\" onclick=\"buildTimelineHTML()\">Build HTML</button>';
                     document.getElementById("input-area").innerHTML = tempHTML;
@@ -106,14 +143,15 @@
         for(var i = 0; i < points.length; i++) {
             html += '<div><textarea>' + points[i].innerHTML + '</textarea>'
                 + '<br /><button class="btn" onclick="newDetail(this)">Add</button>' +
-                '<button class="btn" onclick="removeDetail(this)">Remove</button>' +
-                '<button class="btn" onclick="moveUp(this)">Up</button>' +
-                '<button class="btn" onclick="moveDown(this)">Down</button>' +
+                '<button class="btn" onclick="removeDetail(this)" style="margin-left: 5px;">Remove</button>' +
+                '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' +
+                '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' +
                 '<br /><br /></div>';
         }
-        html += '<button class="btn" onclick="addEvent(this)">Add Event</button><button class="btn" onclick="deleteEvent(this)">Remove Event</button>' +
-            '<button class="btn" onclick="moveUp(this)">Up</button>' +
-            '<button class="btn" onclick="moveDown(this)">Down</button>' +
+        html += '<button class="btn" onclick="addEvent(this)">Add Event</button>' +
+            '<button class="btn" onclick="deleteEvent(this)" style="margin-left: 5px;">Remove Event</button>' +
+            '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' +
+            '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' +
             '</div>';
         return html;
     }
@@ -121,6 +159,13 @@
     function moveUp(button) {
         var prevElement = $(button.parentElement).prev();
         $(button.parentElement).detach().insertBefore(prevElement);
+    }
+
+    function moveSectionUp(button) {
+        var prevElement = $(button.parentElement).prev();
+        if($(prevElement).hasClass('section-video')) {
+            $(button.parentElement).detach().insertBefore(prevElement);
+        }
     }
 
     function moveDown(button) {
@@ -133,13 +178,14 @@
             '<input maxlength="4"><br /><br />' +
             '<div><textarea></textarea><br />' +
             '<button class="btn" onclick="newDetail(this)">Add</button>' +
-            '<button class="btn" onclick="removeDetail(this)">Remove</button>' +
-            '<button class="btn" onclick="moveUp(this)">Up</button>' +
-            '<button class="btn" onclick="moveDown(this)">Down</button>' +
+            '<button class="btn" onclick="removeDetail(this)" style="margin-left: 5px;">Remove</button>' +
+            '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' +
+            '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' +
             '<br /><br /></div>' +
-            '<button class="btn" onclick="addEvent(this)">Add Event</button><button class="btn" onclick="deleteEvent(this)">Remove Event</button>' +
-            '<button class="btn" onclick="moveUp(this)">Up</button>' +
-            '<button class="btn" onclick="moveDown(this)">Down</button>' +
+            '<button class="btn" onclick="addEvent(this)">Add Event</button>' +
+            '<button class="btn" onclick="deleteEvent(this)" style="margin-left: 5px;">Remove Event</button>' +
+            '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' +
+            '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' +
             '</div>').insertAfter(button.parentElement);
     }
 
@@ -150,9 +196,9 @@
     function newDetail(button) {
         $('<div><textarea></textarea><br />' +
             '<button class="btn" onclick="newDetail(this)">Add</button>' +
-            '<button class="btn" onclick="removeDetail(this)">Remove</button>' +
-            '<button class="btn" onclick="moveUp(this)">Up</button>' +
-            '<button class="btn" onclick="moveDown(this)">Down</button>' +
+            '<button class="btn" onclick="removeDetail(this)" style="margin-left: 5px;">Remove</button>' +
+            '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' +
+            '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' +
             '<br /><br /></div>').insertAfter(button.parentElement);
     }
 
@@ -195,5 +241,96 @@
         timelineHTML.getElementsByClassName('events-content')[0].getElementsByTagName('ol')[0].innerHTML = tempHTML;
         $("<br /><br /><textarea id=\"output-html\"></textarea>").insertAfter('#build-timeline');
         document.getElementById("output-html").value = timelineHTML.innerHTML;
+    }
+
+    function buildFeature(feature) {
+        var featurehtml = "<div style='height: 610px;' class='feature-video champ-card'><h2>Feature Video</h2>";
+        objects = feature.getElementsByClassName('feat-objects');
+        for (var i = 0; i < 4; i++) {
+            if(i % 2 == 0) {
+                featurehtml += "<div style='float: left; margin: 15px; margin-left: 100px' class='video-entry champ-card'>";
+            } else {
+                featurehtml += "<div style='float: left; margin: 15px;' class='video-entry champ-card'>";
+            }
+            if (i == 0) {
+                featurehtml += "<h3>Feature Video Main Video</h3>";
+            } else {
+                featurehtml += "<h3>Feature Video Preview " + i + "</h3>";
+            }
+            var vidurl = objects[i].getElementsByClassName('video-url')[0].innerHTML;
+            var thumb = objects[i].getElementsByClassName('thumbnail-url')[0].innerHTML;
+            var descript = objects[i].getElementsByClassName('video-description')[0].innerHTML;
+            featurehtml += "<p style='float: left'>URL:</p><input style='float: left' class='video-url' value='" + vidurl + "' /><br /><br />";
+            featurehtml += "<p style='float: left; padding-bottom: 0;'>Thumbnail URL:</p><input style='float: left' class='video-thumb-url' value='" + thumb + "' /><br /><p style='float:left; font-size: 10px; margin-top:0;'>Note: Make sure thumbnail is 16:9</p><br /><br />";
+            featurehtml += "<p style='float: left'>Description:</p><input style='float: left' class='video-description' maxlength='30' value='" + descript + "' />";
+            featurehtml += "</div>";
+            if(i % 2) {
+                featurehtml+="<br /><br />";
+            }
+        }
+        featurehtml += "<button style='float: left; margin-left: 20px; margin-top: 10px;' class='btn' onclick='addNewSection(this)'>Add Section</button></div>";
+        return featurehtml;
+    }
+
+    function buildSection(section) {
+        var sectionhtml = "<div style='height: 650px;' class='section-video champ-card'><h2>Video Section</h2>";
+        sectionhtml += "<p style='float: left'>Section Title</p><input style='float: left' class='section-title' value='" + section.getElementsByTagName('h2')[0].innerHTML + "' /><br /><br />";
+        objects = section.getElementsByClassName('video-section-object');
+        for (var i = 0; i < 4; i++) {
+            if(i % 2 == 0) {
+                sectionhtml += "<div style='float: left; margin: 15px; margin-left: 100px' class='video-entry champ-card'>";
+            } else {
+                sectionhtml += "<div style='float: left; margin: 15px;' class='video-entry champ-card'>";
+            }
+            if (i == 0) {
+                sectionhtml += "<h3>Feature Video Main Video</h3>";
+            } else {
+                sectionhtml += "<h3>Feature Video Preview " + i + "</h3>";
+            }
+            var vidurl = objects[i].getElementsByClassName('video-url-section')[0].innerHTML;
+            var thumb = objects[i].getElementsByClassName('thumbnail-url-section')[0].innerHTML;
+            var descript = objects[i].getElementsByClassName('video-description-section')[0].innerHTML;
+            sectionhtml += "<p style='float: left'>URL:</p><input style='float: left' class='video-url' value='" + vidurl + "' /><br /><br />";
+            sectionhtml += "<p style='float: left; padding-bottom: 0;'>Thumbnail URL:</p><input style='float: left' class='video-thumb-url' value='" + thumb + "' /><br /><p style='float:left; font-size: 10px; margin-top:0;'>Note: Make sure thumbnail is 16:9</p><br /><br />";
+            sectionhtml += "<p style='float: left'>Description:</p><input style='float: left' class='video-description' maxlength='30' value='" + descript + "' />";
+            sectionhtml += "</div>";
+            if(i % 2) {
+                sectionhtml+="<br /><br />";
+            }
+        }
+        sectionhtml += "<button style='float: left; margin-left: 20px; margin-top: 10px;' class='btn' onclick='addNewSection(this)'>Add Section</button>";
+        sectionhtml += "<button style='float: left; margin-top: 10px; margin-left: 5px;' class='btn' onclick='deleteEvent(this)'>Remove Section</button>";
+        sectionhtml += "<button style='float: left; margin-top: 10px; margin-left: 5px;' class='btn' onclick='moveSectionUp(this)'>Move Up</button>";
+        sectionhtml += "<button style='float: left; margin-top: 10px; margin-left: 5px;' class='btn' onclick='moveDown(this)'>Move Down</button></div>";
+        return sectionhtml;
+    }
+
+    function addNewSection(button) {
+        var sectionhtml = "<div style='height: 650px;' class='section-video champ-card'><h2>Video Section</h2>";
+        sectionhtml += "<p style='float: left'>Section Title</p><input style='float: left' class='section-title' /><br /><br />";
+        for (var i = 0; i < 4; i++) {
+            if(i % 2 == 0) {
+                sectionhtml += "<div style='float: left; margin: 15px; margin-left: 100px' class='video-entry champ-card'>";
+            } else {
+                sectionhtml += "<div style='float: left; margin: 15px;' class='video-entry champ-card'>";
+            }
+            if (i == 0) {
+                sectionhtml += "<h3>Feature Video Main Video</h3>";
+            } else {
+                sectionhtml += "<h3>Feature Video Preview " + i + "</h3>";
+            }
+            sectionhtml += "<p style='float: left'>URL:</p><input style='float: left' class='video-url' /><br /><br />";
+            sectionhtml += "<p style='float: left; padding-bottom: 0;'>Thumbnail URL:</p><input style='float: left' class='video-thumb-url' /><br /><p style='float:left; font-size: 10px; margin-top:0;'>Note: Make sure thumbnail is 16:9</p><br /><br />";
+            sectionhtml += "<p style='float: left'>Description:</p><input style='float: left' class='video-description' maxlength='30' />";
+            sectionhtml += "</div>";
+            if(i % 2) {
+                sectionhtml+="<br /><br />";
+            }
+        }
+        sectionhtml += "<button style='float: left; margin-left: 20px; margin-top: 10px;' class='btn' onclick='addNewSection(this)'>Add Section</button>";
+        sectionhtml += "<button style='float: left; margin-top: 10px; margin-left: 5px;' class='btn' onclick='deleteEvent(this)'>Remove Section</button>";
+        sectionhtml += "<button style='float: left; margin-top: 10px; margin-left: 5px;' class='btn' onclick='moveSectionUp(this)'>Move Up</button>";
+        sectionhtml += "<button style='float: left; margin-top: 10px; margin-left: 5px;' class='btn' onclick='moveDown(this)'>Move Down</button></div>";
+        $(sectionhtml).insertAfter($(button.parentElement));
     }
 </script>
