@@ -131,6 +131,7 @@
                         '<button class="btn" onclick="deleteEvent(this)" style="margin-left: 5px;">Remove Event</button>' +
                         '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' +
                         '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' +
+                        '<button class="btn" onclick="addImage(this)" style="margin-left: 5px;">Add Image</button>' +
                         '</div>' +
                         '<br /><button class=\"btn\" id=\"build-timeline\" onclick=\"buildTimelineHTML()\">Build HTML</button>';
                     document.getElementById("input-area").innerHTML = tempHTML;
@@ -145,6 +146,11 @@
         var html = '<div class="event-entry champ-card">';
         var year = event.getElementsByTagName('h2')[0].innerHTML;
         html += '<input maxlength="4" value="' + year + '"><br /><br />';
+        if (event.getElementsByTagName('img').length != 0) {
+            html += '<div><h3 style="float: left; margin-bottom: 0;">Image Address: </h3><input style="margin-bottom: 0" class="timeline-image"' +
+                ' value="' + event.getElementsByTagName('img')[0].getAttribute('src') + '"><br />' +
+                '<button style="clear: left; float: left; margin-top: 0" class="btn" onclick="deleteEvent(this)">Remove Image</button><br /><br /><br /></div>';
+        }
         var points = event.getElementsByTagName('p');
         for(var i = 0; i < points.length; i++) {
             html += '<div><textarea>' + points[i].innerHTML + '</textarea>'
@@ -158,6 +164,7 @@
             '<button class="btn" onclick="deleteEvent(this)" style="margin-left: 5px;">Remove Event</button>' +
             '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' +
             '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' +
+            '<button class="btn" onclick="addImage(this)" style="margin-left: 5px;">Add Image</button>' +
             '</div>';
         return html;
     }
@@ -192,7 +199,15 @@
             '<button class="btn" onclick="deleteEvent(this)" style="margin-left: 5px;">Remove Event</button>' +
             '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' +
             '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' +
+            '<button class="btn" onclick="addImage(this)" style="margin-left: 5px;">Add Image</button>' +
             '</div>').insertAfter(button.parentElement);
+    }
+
+    function addImage(button) {
+        if (button.parentElement.getElementsByTagName('h3').length == 0) {
+            $('<div><h3 style="float: left; margin-bottom: 0;">Image Address: </h3><input style="margin-bottom: 0" class="timeline-image"><br />' +
+                '<button style="clear: left; float: left; margin-top: 0" class="btn" onclick="deleteEvent(this)">Remove Image</button><br /><br /><br /></div>').insertAfter($(button.parentElement.getElementsByTagName('input')[0]).next().next());
+        }
     }
 
     function deleteEvent(button) {
@@ -238,6 +253,9 @@
                 tempHTML += '<li data-date=\"01/01/' + currentEvent + '\">';
             }
             tempHTML += '<h2>' + currentEvent + '</h2>';
+            if(events[i].getElementsByTagName('h3').length != 0) {
+                tempHTML += '<img src="' + events[i].getElementsByTagName('input')[1].value + '" style="width: 100%; height: auto;" /><br /><br />'
+            }
             var points = events[i].getElementsByTagName('textarea');
             for (var j = 0; j < points.length; j++) {
                 tempHTML += '<p>' + points[j].value + '</p><br />'
