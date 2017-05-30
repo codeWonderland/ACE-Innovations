@@ -5,7 +5,7 @@
 <p>Modify the content as desired, then when all is done and all fields filled out, click the build html button on the bottom of the screen</p>
 <p>From here a text area will appear, click in it, press CMD-A on a Mac or CTRL-A on a PC to select all, then copy</p>
 <p>You can paste that HTML into Ingeniux and then include the client side script component that is appropriate for the situation</p>
-<p>Note: For timeline you must insert appropriate component from '/Internal Components/Client Side Script Components/Alice'</p><br /><br />
+<p>Note: For each page you must insert appropriate component from '/Internal Components/Client Side Script Components/Alice'</p><br /><br />
 <select id="type-of-page">
     <option disabled="disabled" selected="selected" value=""> - - Type of Page - - </option>
     <option value="video">Video Page</option>
@@ -94,7 +94,7 @@
                     break;
                 case 'vert-timeline':
                     var tempHTML = "";
-                    tempHTML += buildVertTimeline(htmlContent.getElementsByClassName('container'));
+                    tempHTML += buildVertTimeline(document.getElementsByClassName('container')[0]);
                     tempHTML += "<br /><button class=\"btn\" id=\"build-vert-timeline\" onclick=\"buildVertTimelineHTML()\">Build HTML</button>";
                     document.getElementById("input-area").innerHTML = tempHTML;
                     break;
@@ -186,7 +186,8 @@
 
     function moveUp(button) {
         var prevElement = $(button.parentElement).prev();
-        $(button.parentElement).detach().insertBefore(prevElement);
+        if($(button.parentElement).prop("tagName") == $(prevElement).prop("tagName"))
+            $(button.parentElement).detach().insertBefore(prevElement);
     }
 
     function moveSectionUp(button) {
@@ -198,7 +199,8 @@
 
     function moveDown(button) {
         var nextElement = $(button.parentElement).next();
-        $(button.parentElement).detach().insertAfter(nextElement);
+        if($(button.parentElement).prop("tagName") == $(nextElement).prop("tagName"))
+            $(button.parentElement).detach().insertAfter(nextElement);
     }
 
     function addEvent(button) {
@@ -409,10 +411,61 @@
 
     function buildVertTimeline(container) {
         var tempHTML = "";
-        tempHTML += '<button class="btn" onclick="addCoverPhoto(this)">Add Cover Photo</button><br/><br/>';
+        tempHTML += '<br/><button class="btn" onclick="addCoverPhoto(this)">Add Cover Photo</button><br/>';
         var events = container.getElementsByClassName('timeline-item');
         for (var i = 0; i < events.length; i++) {
-
+            tempHTML += '<div class="event-element champ-card"><input class="event-element-header" type="text" value="' + events[i].getAttribute('data-year') + '"><br /><br />';
+            var points = events[i].getElementsByTagName('li');
+            for (var j = 0; j < points.length; j++) {
+                console.log(points[j].innerHTML);
+                tempHTML += '<div><textarea class="event-element-point">' + points[j].innerHTML + '</textarea>' +
+                    '<br/><button class="btn" style="margin-left: 5px" onclick="addElement(this)">Add Detail</button>' +
+                    '<button class="btn" style="margin-left: 5px" onclick="removeDetail(this)">Remove Detail</button>' +
+                    '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' +
+                    '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button>' +
+                    '<br/><br/></div>';
+            }
+            tempHTML += '<button class="btn" style="margin-left: 5px" onclick="addTimelineElement(this)">Add Event</button>' +
+                '<button class="btn" style="margin-left: 5px" onclick="deleteEvent(this)">Remove Event</button>' +
+                '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' +
+                '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button></div>';
         }
+        return tempHTML;
+    }
+
+    function addCoverPhoto(button) {
+        if (button.parentElement.getElementsByTagName('h3').length == 0) {
+            $('<div><h3 style="float: left; margin-bottom: 0;">Image Address: </h3><input style="margin-bottom: 0; margin-top: 15px;" class="timeline-image"><br />' +
+                '<button style="clear: left; float: left; margin-top: 0" class="btn" onclick="removeCoverPhoto(this)">Remove Image</button><br /><br /></div>').insertBefore(button);
+            button.remove();
+        }
+    }
+
+    function removeCoverPhoto(button) {
+        $('<button class="btn" onclick="addCoverPhoto(this)">Add Cover Photo</button>').insertBefore(button.parentElement);
+        button.parentElement.remove();
+    }
+
+    function addTimelineElement(button) {
+        $('<div class="event-element champ-card"><input class="event-element-header" type="text"><br /><br />' +
+            '<div><textarea class="event-element-point"></textarea>' +
+            '<br/><button class="btn" style="margin-left: 5px" onclick="addElement(this)">Add Detail</button>' +
+            '<button class="btn" style="margin-left: 5px" onclick="removeDetail(this)">Remove Detail</button>' +
+            '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' +
+            '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button>' +
+            '<br/><br/></div>' +
+            '<button class="btn" style="margin-left: 5px" onclick="addTimelineElement(this)">Add Event</button>' +
+            '<button class="btn" style="margin-left: 5px" onclick="deleteEvent(this)">Remove Event</button>' +
+            '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' +
+            '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button></div>').insertAfter(button.parentElement);
+    }
+
+    function addElement(button) {
+        $('<div><textarea class="event-element-point"></textarea>' +
+            '<br/><button class="btn" style="margin-left: 5px" onclick="addElement(this)">Add Detail</button>' +
+            '<button class="btn" style="margin-left: 5px" onclick="removeDetail(this)">Remove Detail</button>' +
+            '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' +
+            '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button>' +
+            '<br/><br/></div>').insertAfter(button.parentElement);
     }
 </script>
