@@ -151,6 +151,21 @@
                         '<br /><button class=\"btn\" id=\"build-timeline\" onclick=\"buildTimelineHTML()\">Build HTML</button>';
                     document.getElementById("input-area").innerHTML = tempHTML;
                     break;
+                case 'vert-timeline':
+                    var tempHTML = '<br/><button class="btn" onclick="addCoverPhoto(this)">Add Cover Photo</button><br/>' +
+                        '<div class="event-element champ-card"><input class="event-element-header" type="text"><br /><br />' +
+                        '<div><textarea class="event-element-point"></textarea>' +
+                        '<br/><button class="btn" style="margin-left: 5px" onclick="addElement(this)">Add Detail</button>' +
+                        '<button class="btn" style="margin-left: 5px" onclick="removeDetail(this)">Remove Detail</button>' +
+                        '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' +
+                        '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button>' +
+                        '<br/><br/></div>' +
+                        '<button class="btn" style="margin-left: 5px" onclick="addTimelineElement(this)">Add Event</button>' +
+                        '<button class="btn" style="margin-left: 5px" onclick="deleteEvent(this)">Remove Event</button>' +
+                        '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' +
+                        '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button></div>';
+                    document.getElementById("input-area").innerHTML = tempHTML;
+                    break;
                 default:
                     break;
             }
@@ -411,7 +426,13 @@
 
     function buildVertTimeline(container) {
         var tempHTML = "";
-        tempHTML += '<br/><button class="btn" onclick="addCoverPhoto(this)">Add Cover Photo</button><br/>';
+        if(document.getElementsByClassName('vert-timeline-image').length != 0) {
+            tempHTML += '<br/><div><h3 style="float: left; margin-bottom: 0;">Image Address: </h3><input style="margin-bottom: 0; margin-top: 15px;" ' +
+                'value="' + document.getElementsByClassName('vert-timeline-image')[0].getAttribute('src') + '" class="timeline-image"><br />' +
+                '<button style="clear: left; float: left; margin-top: 0" class="btn" onclick="removeCoverPhoto(this)">Remove Image</button><br /><br /></div>'
+        } else {
+            tempHTML += '<br/><button class="btn" onclick="addCoverPhoto(this)">Add Cover Photo</button><br/>';
+        }
         var events = container.getElementsByClassName('timeline-item');
         for (var i = 0; i < events.length; i++) {
             tempHTML += '<div class="event-element champ-card"><input class="event-element-header" type="text" value="' + events[i].getAttribute('data-year') + '"><br /><br />';
@@ -467,5 +488,27 @@
             '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' +
             '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button>' +
             '<br/><br/></div>').insertAfter(button.parentElement);
+    }
+
+    function buildVertTimelineHTML() {
+        var tempHTML = "";
+        if (document.getElementsByClassName('timeline-image').length != 0) {
+            tempHTML += '<img style="width: 100%; height: auto;" class="vert-timeline-image" src="' + document.getElementsByClassName('timeline-image')[0].value + '" />';
+        }
+        tempHTML += '<div class="container">';
+        var events = document.getElementsByClassName('event-element');
+        for (var i = 0; i < events.length; i++) {
+            tempHTML += '<div class="timeline-item" data-year="' + events[i].getElementsByClassName('event-element-header')[0].value + '">' +
+                '<div class="time-card">' +
+                '<ul>';
+            var points = events[i].getElementsByClassName('event-element-point');
+            for (var j = 0; j < points.length; j++) {
+                tempHTML += '<li>' + points[j].value + '</li>';
+            }
+            tempHTML += '</ul></div></div>';
+        }
+        tempHTML += '</div>';
+        $("<br /><br /><textarea id=\"output-html\"></textarea>").insertAfter('#build-vert-timeline');
+        document.getElementById("output-html").value = tempHTML;
     }
 </script>
