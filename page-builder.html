@@ -59,7 +59,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
     function ls(location) {
-        (location == undefined ? location = document : location = location);
+        location == undefined ? location = document : location = location;
         var divs = location.getElementsByTagName('div');
         for (var i = 0; i < divs.length; i++) {
             console.log('Id: ' + divs[i].getAttribute('id') + ' Class: ' + divs[i].getAttribute('class'));
