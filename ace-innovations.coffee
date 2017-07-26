@@ -312,13 +312,40 @@ $('#parse').on "click", ->
   document.getElementById("output-html").value = timelineHTML.innerHTML
   return
 
-# Todo this
+# Todo pre, post, purpose
 @buildContactBookHTML = ->
   contactHTML = document.getElementById('contact-book-html')
   contacts = document.getElementsByClassName('container')
   tempHTML = ''
   for contact in contacts
-    alert 'hello'
+    tempHTML += '<div class="contact">
+                 <p class="name">' + contact.getElementsByTagName('input')[0].value + '</p>'
+    
+    for detail in contact.getElementsByClassName('detail')
+      tempHTML += '<div class="detail">'
+      
+      if not detail.getElementsByClassName('detail-options')[0].getElementsByTagName('input')[0].checked
+        tempHTML += '<p class="heading">' + detail.getElementsByClassName('heading-container')[0].getElementsByClassName('heading')[0].value + '</p>'
+        
+      if detail.getElementsByClassName('detail-options')[0].getElementsByTagName('input')[1].checked
+        for link in detail.getElementsByClassName('link-container')
+          tempHTML += '<a class="link" href="' + link.getElementsByTagName('input')[2].value + '" title="' + link.getElementsByTagName('input')[1].value + '">' + link.getElementsByTagName('input')[0].value + '</a>'
+      
+      else if detail.getElementsByClassName('detail-options')[0].getElementsByTagName('input')[2].checked
+        btn = detail.getElementsByClassName('btn-container')[0]
+        tempHTML += '<a class="btn" href="' + btn.getElementsByTagName('input')[2].value + '" title="' + btn.getElementsByTagName('input')[1].value + '">' + btn.getElementsByTagName('input')[0].value + '</a>'
+
+      else
+        for line in detail.getElementsByClassName('line-container')
+          tempHTML += '<p class="line">' + line.getElementsByTagName('input')[0].value + '</p>'
+      
+      tempHTML += '</div>'
+    
+    tempHTML += '</div>'
+  
+  contactHTML.getElementsByTagName('div')[4].innerHTML = tempHTML
+  $('<br /><br /><textarea id="output-html"></textarea>').insertAfter('#build-contact-book')
+  document.getElementById("output-html").value = contactHTML.innerHTML
   
 #Pre: this function is called when someone clicks the build html button at the bottom of a video page
 #Post: parses the data on the screen and outputs it in html format in the text box below

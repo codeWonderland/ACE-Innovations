@@ -204,16 +204,43 @@
   };
 
   this.buildContactBookHTML = function() {
-    var contact, contactHTML, contacts, k, len, results, tempHTML;
+    var btn, contact, contactHTML, contacts, detail, k, l, len, len1, len2, len3, line, link, m, n, ref, ref1, ref2, tempHTML;
     contactHTML = document.getElementById('contact-book-html');
     contacts = document.getElementsByClassName('container');
     tempHTML = '';
-    results = [];
     for (k = 0, len = contacts.length; k < len; k++) {
       contact = contacts[k];
-      results.push(alert('hello'));
+      tempHTML += '<div class="contact"> <p class="name">' + contact.getElementsByTagName('input')[0].value + '</p>';
+      ref = contact.getElementsByClassName('detail');
+      for (l = 0, len1 = ref.length; l < len1; l++) {
+        detail = ref[l];
+        tempHTML += '<div class="detail">';
+        if (!detail.getElementsByClassName('detail-options')[0].getElementsByTagName('input')[0].checked) {
+          tempHTML += '<p class="heading">' + detail.getElementsByClassName('heading-container')[0].getElementsByClassName('heading')[0].value + '</p>';
+        }
+        if (detail.getElementsByClassName('detail-options')[0].getElementsByTagName('input')[1].checked) {
+          ref1 = detail.getElementsByClassName('link-container');
+          for (m = 0, len2 = ref1.length; m < len2; m++) {
+            link = ref1[m];
+            tempHTML += '<a class="link" href="' + link.getElementsByTagName('input')[2].value + '" title="' + link.getElementsByTagName('input')[1].value + '">' + link.getElementsByTagName('input')[0].value + '</a>';
+          }
+        } else if (detail.getElementsByClassName('detail-options')[0].getElementsByTagName('input')[2].checked) {
+          btn = detail.getElementsByClassName('btn-container')[0];
+          tempHTML += '<a class="btn" href="' + btn.getElementsByTagName('input')[2].value + '" title="' + btn.getElementsByTagName('input')[1].value + '">' + btn.getElementsByTagName('input')[0].value + '</a>';
+        } else {
+          ref2 = detail.getElementsByClassName('line-container');
+          for (n = 0, len3 = ref2.length; n < len3; n++) {
+            line = ref2[n];
+            tempHTML += '<p class="line">' + line.getElementsByTagName('input')[0].value + '</p>';
+          }
+        }
+        tempHTML += '</div>';
+      }
+      tempHTML += '</div>';
     }
-    return results;
+    contactHTML.getElementsByTagName('div')[4].innerHTML = tempHTML;
+    $('<br /><br /><textarea id="output-html"></textarea>').insertAfter('#build-contact-book');
+    return document.getElementById("output-html").value = contactHTML.innerHTML;
   };
 
   this.buildVideoHTML = function() {
