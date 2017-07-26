@@ -13,7 +13,7 @@
   };
 
   $('#parse').on("click", function() {
-    var event, events, feature, html, htmlContent, i, k, l, len, len1, m, pageType, section, sections, tempHTML;
+    var contact, event, events, feature, html, htmlContent, i, k, l, len, len1, len2, m, n, pageType, ref, section, sections, tempHTML;
     pageType = document.getElementById("type-of-page");
     html = document.getElementById("html");
     htmlContent = document.getElementById("html-content");
@@ -44,6 +44,14 @@
           tempHTML += buildVertTimeline(document.getElementsByClassName('container')[0]);
           tempHTML += "<br /><button class='btn' id='build-vert-timeline' onclick='buildVertTimelineHTML()'>Build HTML</button>";
           break;
+        case "contact-book":
+          ref = document.getElementById('contact-list').getElementsByClassName('contact');
+          for (m = 0, len2 = ref.length; m < len2; m++) {
+            contact = ref[m];
+            tempHTML += buildContact(contact);
+          }
+          tempHTML += "<br /><button class='btn' id='build-contact-book' onclick='buildContactBookHTML()'>Build HTML</button>";
+          break;
         default:
           break;
       }
@@ -57,7 +65,7 @@
       switch (pageType.value) {
         case "video":
           tempHTML += "<div style='height: 610px;' class='feature-video champ-card'><h2>Feature Video</h2>";
-          for (i = m = 0; m < 4; i = ++m) {
+          for (i = n = 0; n < 4; i = ++n) {
             if (!(i % 2)) {
               tempHTML += "<div style='float: left; margin: 15px; margin-left: 100px;' class='video-entry champ-card'>";
             } else {
@@ -73,13 +81,16 @@
               tempHTML += "<br/><br/>";
             }
           }
-          tempHTML += "<button style='float: left; margin-left: 20px; margin-top: 10px;' class='btn' onclick='addNewSection(this)'>Add Section</button></div>";
+          tempHTML += "<button style='float: left; margin-left: 20px; margin-top: 10px;' class='btn' onclick='addNewSection(this)'>Add Section</button></div>" + '<br /><button class="btn" id="build-video" onclick="buildVideoHTML()">Build HTML</button>';
           break;
         case "timeline":
-          tempHTML += '<div class="event-entry champ-card">' + '<input maxlength="4"><br /><br />' + '<div><textarea></textarea><br />' + '<button class="btn" onclick="newDetail(this)">Add</button>' + '<button class="btn" onclick="removeDetail(this)" style="margin-left: 5px;">Remove</button>' + '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' + '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' + '<br /><br /></div>' + '<button class="btn" onclick="addEvent(this)">Add Event</button>' + '<button class="btn" onclick="deleteEvent(this)" style="margin-left: 5px;">Remove Event</button>' + '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' + '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' + '<button class="btn" onclick="addImage(this)" style="margin-left: 5px;">Add Image</button>' + '</div>' + '<br /><button class=\"btn\" id=\"build-timeline\" onclick=\"buildTimelineHTML()\">Build HTML</button>';
+          tempHTML += '<div class="event-entry champ-card">' + '<input maxlength="4"><br /><br />' + '<div><textarea></textarea><br />' + '<button class="btn" onclick="newDetail(this)">Add</button>' + '<button class="btn" onclick="removeDetail(this)" style="margin-left: 5px;">Remove</button>' + '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' + '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' + '<br /><br /></div>' + '<button class="btn" onclick="addEvent(this)">Add Event</button>' + '<button class="btn" onclick="deleteEvent(this)" style="margin-left: 5px;">Remove Event</button>' + '<button class="btn" onclick="moveUp(this)" style="margin-left: 5px;">Up</button>' + '<button class="btn" onclick="moveDown(this)" style="margin-left: 5px;">Down</button>' + '<button class="btn" onclick="addImage(this)" style="margin-left: 5px;">Add Image</button>' + '</div>' + '<br /><button class="btn" id="build-timeline" onclick="buildTimelineHTML()">Build HTML</button>';
           break;
         case "vert-timeline":
-          tempHTML += '<br/><button class="btn" onclick="addCoverPhoto(this)">Add Cover Photo</button><br/>' + '<div class="event-element champ-card"><input class="event-element-header" type="text"><br /><br />' + '<div><textarea class="event-element-point"></textarea>' + '<br/><button class="btn" style="margin-left: 5px" onclick="addElement(this)">Add Detail</button>' + '<button class="btn" style="margin-left: 5px" onclick="removeDetail(this)">Remove Detail</button>' + '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' + '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button>' + '<br/><br/></div>' + '<button class="btn" style="margin-left: 5px" onclick="addTimelineElement(this)">Add Event</button>' + '<button class="btn" style="margin-left: 5px" onclick="deleteEvent(this)">Remove Event</button>' + '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' + '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button></div>' + '<br /><button class=\"btn\" id=\"build-timeline\" onclick=\"buildVertTimelineHTML()\">Build HTML</button>';
+          tempHTML += '<br/><button class="btn" onclick="addCoverPhoto(this)">Add Cover Photo</button><br/>' + '<div class="event-element champ-card"><input class="event-element-header" type="text"><br /><br />' + '<div><textarea class="event-element-point"></textarea>' + '<br/><button class="btn" style="margin-left: 5px" onclick="addElement(this)">Add Detail</button>' + '<button class="btn" style="margin-left: 5px" onclick="removeDetail(this)">Remove Detail</button>' + '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' + '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button>' + '<br/><br/></div>' + '<button class="btn" style="margin-left: 5px" onclick="addTimelineElement(this)">Add Event</button>' + '<button class="btn" style="margin-left: 5px" onclick="deleteEvent(this)">Remove Event</button>' + '<button class="btn" style="margin-left: 5px" onclick="moveUp(this)">Move Up</button>' + '<button class="btn" style="margin-left: 5px" onclick="moveDown(this)">Move Down</button></div>' + '<br /><button class="btn" id="build-timeline" onclick="buildVertTimelineHTML()">Build HTML</button>';
+          break;
+        case "contact-book":
+          tempHTML += '<div class="container champ-card" style="clear: both; width: 100%;">\n' + '  <h2 style="float: left;">\n' + '  Contact Name:\n' + '  </h2>\n' + '  <input type="text" style="float: left; margin-top: -2px; width: 45%; margin-left: 7px; box-sizing: border-box; border: 2px solid #ccc; border-radius: 4px; font-size: 16px; background-color: white;padding: 7px;" maxlength="100">\n' + '  <div class="detail champ-card" style="clear: both; position: relative">\n' + '    <div class="heading-container" style="width: 50%; float: left;">\n' + '      <h2 style="margin-top: 0;">\n' + '      Detail\n' + '      </h2>\n' + '      <h3 style="float: left; margin-top: 0;">\n' + '      Heading:\n' + '      </h3>\n' + '      <input type="text" class="heading" maxlength="18" style="float: left; margin-top: -2px; margin-left: 5px; width: 60%">\n' + '    </div>\n' + '    <div class="detail-options" style="padding: 10px;">\n' + '      <input style="float: left" type="checkbox" onclick="noContactDetailHeading(this)"><p style="margin-top: -4px;">No Heading</p>\n' + '      <input style="float: left" type="checkbox" onclick="contactDetailIsLink(this)"><p style="margin-top: -4px;">Detail is Link</p>\n' + '      <input style="float: left" type="checkbox" onclick="contactDetailIsButton(this)"><p style="margin-top: -4px;">Detail is Button</p>\n' + '    </div>\n' + '    <h3 class="line-header">Lines:</h3>\n' + '    <div class="line-container">\n' + '      <input type="text" maxlength="24" style="width: 45%; border: 1px solid lightgrey; box-sizing: border-box; border: 2px solid #ccc; border-radius: 4px; font-size: 16px; background-color: white;padding: 7px; margin-bottom: 5px;" class="line">\n' + '      <a class="btn" onclick="addContactDetailLine(this)">+</a>\n' + '      <a class="btn" onclick="deleteContactDetailLine(this)">−</a>\n' + '      <a class="btn" onclick="moveUp(this)">↑</a>\n' + '      <a class="btn" onclick="moveDown(this)">↓</a>\n' + '    </div> \n' + '    <p class="disclaimer">* Lines have a 24 character limit for styling purposes</p>' + '    <a class="btn" onclick="addContactDetail(this)">Add Detail</a>\n' + '    <a class="btn" onclick="deleteContactDetail(this)">Delete</a>\n' + '    <a class="btn" onclick="moveUp(this)">Move Up</a>\n' + '    <a class="btn" onclick="moveDown(this)">Move Down</a>\n' + '  </div>\n' + '  <a class="btn" onclick="addContact(this)">Add Contact</a>\n' + '  <a class="btn" onclick="deleteContact(this)">Delete</a>\n' + '  <a class="btn" onclick="moveUp(this)">Move Up</a>\n' + '  <a class="btn" onclick="moveDown(this)">Move Down</a>\n' + '</div>' + '<br /><button class="btn" id="build-contact-book" onclick="buildContactBookHTML()">Build HTML</button>';
           break;
         default:
           break;
@@ -161,20 +172,20 @@
     for (i = k = 0, ref = events.length; 0 <= ref ? k < ref : k > ref; i = 0 <= ref ? ++k : --k) {
       currentEvent = events[i].getElementsByTagName('input')[0].value;
       if (!i) {
-        tempHTML += '<li><a href=\"#0\" data-date=\"01/01/' + currentEvent + '\" class=\"selected\">' + currentEvent + '</a></li>';
+        tempHTML += '<li><a href="#0" data-date="01/01/' + currentEvent + '" class="selected">' + currentEvent + '</a></li>';
       } else {
-        tempHTML += '<li><a href=\"#0\" data-date=\"01/01/' + currentEvent + '\">' + currentEvent + '</a></li>';
+        tempHTML += '<li><a href="#0" data-date="01/01/' + currentEvent + '">' + currentEvent + '</a></li>';
       }
     }
-    tempHTML += '</ol><span class=\"filling-line\" aria-hidden=\"true\"></span>';
+    tempHTML += '</ol><span class="filling-line" aria-hidden="true"></span>';
     timelineHTML.getElementsByClassName('events')[0].innerHTML = tempHTML;
     tempHTML = "";
     for (i = l = 0, ref1 = events.length; 0 <= ref1 ? l < ref1 : l > ref1; i = 0 <= ref1 ? ++l : --l) {
       currentEvent = events[i].getElementsByTagName('input')[0].value;
       if (!i) {
-        tempHTML += '<li class=\"selected\" data-date=\"01/01/' + currentEvent + '\">';
+        tempHTML += '<li class="selected" data-date="01/01/' + currentEvent + '">';
       } else {
-        tempHTML += '<li data-date=\"01/01/' + currentEvent + '\">';
+        tempHTML += '<li data-date="01/01/' + currentEvent + '">';
       }
       tempHTML += '<h2>' + currentEvent + '</h2>';
       if (events[i].getElementsByTagName('h3').length) {
@@ -188,8 +199,21 @@
       tempHTML += '</li>';
     }
     timelineHTML.getElementsByClassName('events-content')[0].getElementsByTagName('ol')[0].innerHTML = tempHTML;
-    $("<br /><br /><textarea id=\"output-html\"></textarea>").insertAfter('#build-timeline');
+    $('<br /><br /><textarea id="output-html"></textarea>').insertAfter('#build-timeline');
     document.getElementById("output-html").value = timelineHTML.innerHTML;
+  };
+
+  this.buildContactBookHTML = function() {
+    var contact, contactHTML, contacts, k, len, results, tempHTML;
+    contactHTML = document.getElementById('contact-book-html');
+    contacts = document.getElementsByClassName('container');
+    tempHTML = '';
+    results = [];
+    for (k = 0, len = contacts.length; k < len; k++) {
+      contact = contacts[k];
+      results.push(alert('hello'));
+    }
+    return results;
   };
 
   this.buildVideoHTML = function() {
@@ -210,8 +234,63 @@
       }
       htmlOutput += '</div><br /><br />';
     }
-    $("<br /><br /><textarea id=\"output-html\"></textarea>").insertAfter('#build-video');
+    $('<br /><br /><textarea id="output-html"></textarea>').insertAfter('#build-video');
     document.getElementById("output-html").value = htmlOutput;
+  };
+
+  this.buildContact = function(contact) {
+    var detail, k, len, ref, tempHTML;
+    tempHTML = '<div class="container champ-card" style="clear: both; width: 100%"> <h2 style="float: left">Contact Name:</h2> <input type="text" style="float: left; margin-top: -2px; width: 45%; margin-left: 7px; box-sizing: border-box; border: 2px solid #ccc; border-radius: 4px; font-size: 16px; background-color: white;padding: 7px;" maxlength="100" value="' + contact.getElementsByClassName('name')[0].innerHTML + '">';
+    ref = contact.getElementsByClassName('detail');
+    for (k = 0, len = ref.length; k < len; k++) {
+      detail = ref[k];
+      tempHTML += buildContactDetail(detail);
+    }
+    tempHTML += '<a class="btn" onclick="addContact(this)">Add Contact</a> <a class="btn" onclick="deleteContact(this)">Delete</a> <a class="btn" onclick="moveUp(this)">Move Up</a> <a class="btn" onclick="moveDown(this)">Move Down</a> </div>';
+    return tempHTML;
+  };
+
+  this.buildContactDetail = function(detail) {
+    var k, l, len, len1, line, link, ref, ref1, tempHTML;
+    tempHTML = '<div class="detail champ-card" style="clear: both; position: relative">' + '  <div class="heading-container" style="width: 50%; float: left;">' + '     <h2 style="margin-top: 0;">' + '        Detail' + '     </h2>' + '     <h3 style="float: left; margin-top: 0;">' + '        Heading:' + '     </h3>';
+    if (detail.getElementsByClassName('heading').length) {
+      tempHTML += '<input type="text" class="heading" maxlength="18" style="float: left; margin-top: -2px; margin-left: 5px; width: 60%" value="' + detail.getElementsByClassName('heading')[0].innerHTML + '">';
+    } else {
+      tempHTML += '<input type="text" class="heading" maxlength="18" style="float: left; margin-top: -2px; margin-left: 5px; width: 60%" disabled>';
+    }
+    tempHTML += '</div>' + '<div class="detail-options" style="padding: 10px;">';
+    if (detail.getElementsByClassName('heading').length) {
+      tempHTML += '<input style="float: left" type="checkbox" onclick="noContactDetailHeading(this)"><p style="margin-top: -4px;">No Heading</p>';
+    } else {
+      tempHTML += '<input style="float: left" type="checkbox" onclick="noContactDetailHeading(this)" checked><p style="margin-top: -4px;">No Heading</p>';
+    }
+    if (detail.getElementsByClassName('link').length) {
+      tempHTML += '<input style="float: left" type="checkbox" onclick="contactDetailIsLink(this)" checked><p style="margin-top: -4px;">Detail is Link</p> <input style="float: left" type="checkbox" onclick="contactDetailIsButton(this)" disabled><p style="margin-top: -4px;">Detail is Button</p>';
+    } else if (detail.getElementsByClassName('btn').length) {
+      tempHTML += '<input style="float: left" type="checkbox" onclick="contactDetailIsLink(this)" disabled><p style="margin-top: -4px;">Detail is Link</p> <input style="float: left" type="checkbox" onclick="contactDetailIsButton(this)" checked><p style="margin-top: -4px;">Detail is Button</p>';
+    } else {
+      tempHTML += '<input style="float: left" type="checkbox" onclick="contactDetailIsLink(this)"><p style="margin-top: -4px;">Detail is Link</p> <input style="float: left" type="checkbox" onclick="contactDetailIsButton(this)"><p style="margin-top: -4px;">Detail is Button</p>';
+    }
+    tempHTML += '</div>';
+    if (detail.getElementsByClassName('line').length) {
+      tempHTML += '<h3 class="line-header">Lines:</h3>';
+      ref = detail.getElementsByClassName('line');
+      for (k = 0, len = ref.length; k < len; k++) {
+        line = ref[k];
+        tempHTML += '<div class="line-container">' + '  <input type="text" maxlength="24" style="width: 45%; border: 1px solid lightgrey; box-sizing: border-box; border: 2px solid #ccc; border-radius: 4px; font-size: 16px; background-color: white;padding: 7px; margin-bottom: 5px;" class="line" value="' + line.innerHTML + '">' + '  <a class="btn" onclick="addContactDetailLine(this)">+</a>' + '  <a class="btn" onclick="deleteContactDetailLine(this)">−</a>' + '  <a class="btn" onclick="moveUp(this)">↑</a>' + '  <a class="btn" onclick="moveDown(this)">↓</a>' + '</div>';
+      }
+    } else if (detail.getElementsByClassName('link').length) {
+      tempHTML += '<h3 class="line-header">Links:</h3>';
+      ref1 = detail.getElementsByClassName('link');
+      for (l = 0, len1 = ref1.length; l < len1; l++) {
+        link = ref1[l];
+        tempHTML += '<div class="link-container champ-card" style="width: 100%; position: relative;"> <div class="link-details" style="float: left; width: 90%"> <h3 style="margin-bottom: 0; margin-top: 0;">Link Name:</h3> <input type="text" maxlength="23" value="' + link.innerHTML + '"> <h3 style="margin-bottom: 0;">Link Description:</h3> <input type="text" value="' + link.title + '"> <h3 style="margin-bottom: 0;">Location (URL):</h3> <input type="text" value="' + link.href + '"> </div> <div class="link-controls" style="width: 10%; padding: 3%; float: right;"> <a class="btn" style="margin: 17%;" onclick="addContactDetailLink(this)">+</a> <a class="btn" style="margin: 17%;" onclick="deleteContactDetailLink(this)">−</a> <a class="btn" style="margin: 17%;" onclick="moveContactLinkUp(this)">↑</a> <a class="btn" style="margin: 17%;" onclick="moveContactLinkDown(this)">↓</a> </div> <p>* For email addresses preface location with mailto: as such mailto:example@champlain.edu</p> </div>';
+      }
+    } else if (detail.getElementsByClassName('btn').length) {
+      tempHTML += '<div class="btn-container" style="width: 100%; position: relative;"> <h3 style="margin-bottom: 0; margin-top: 0;">Button Name:</h3> <input type="text" maxlength="18" value="' + detail.getElementsByClassName('btn')[0].innerHTML + '"> <h3 style="margin-bottom: 0;">Button Description:</h3> <input type="text" value="' + detail.getElementsByClassName('btn')[0].title + '"> <h3 style="margin-bottom: 0;">Location (URL):</h3> <input type="text" value="' + detail.getElementsByClassName('btn')[0].href + '"> <p>* Only one button per detail</p> </div>';
+    }
+    tempHTML += '  <p class="disclaimer">* Lines have a 24 character limit for styling purposes</p>' + '  <a class="btn" onclick="addContactDetail(this)">Add Detail</a>' + '  <a class="btn" onclick="deleteContactDetail(this)">Delete</a>' + '  <a class="btn" onclick="moveUp(this)">Move Up</a>' + '  <a class="btn" onclick="moveDown(this)">Move Down</a>' + '</div>';
+    return tempHTML;
   };
 
   this.buildFeature = function(feature) {
@@ -367,8 +446,97 @@
       tempHTML += '</ul></div></div>';
     }
     tempHTML += '</div>';
-    $("<br /><br /><textarea id=\"output-html\"></textarea>").insertAfter('#build-vert-timeline');
+    $('<br /><br /><textarea id="output-html"></textarea>').insertAfter('#build-vert-timeline');
     document.getElementById("output-html").value = tempHTML;
+  };
+
+  this.noContactDetailHeading = function(checkbox) {
+    checkbox.parentNode.parentNode.getElementsByClassName('heading-container')[0].getElementsByClassName('heading')[0].disabled = !checkbox.parentNode.parentNode.getElementsByClassName('heading-container')[0].getElementsByClassName('heading')[0].disabled;
+  };
+
+  this.addContactDetailLine = function(button) {
+    $('<div class="line-container"> <input type="text" maxlength="24" style="width: 45%; border: 1px solid lightgrey; box-sizing: border-box; border: 2px solid #ccc; border-radius: 4px; font-size: 16px; background-color: white;padding: 7px; margin-bottom: 5px;" class="line"> <a class="btn" onclick="addContactDetailLine(this)">+</a> <a class="btn" onclick="deleteContactDetailLine(this)">−</a> <a class="btn" onclick="moveUp(this)">↑</a> <a class="btn" onclick="moveDown(this)">↓</a> </div>').insertAfter(button.parentNode);
+  };
+
+  this.deleteContactDetailLine = function(button) {
+    if (button.parentNode.parentNode.getElementsByClassName('line-container').length - 1) {
+      $(button.parentNode).remove();
+    }
+  };
+
+  this.addContactDetail = function(button) {
+    $('<div class="detail champ-card" style="clear: both; position: relative">' + '  <div class="heading-container" style="width: 50%; float: left;">' + '     <h2 style="margin-top: 0;">' + '        Detail' + '     </h2>' + '     <h3 style="float: left; margin-top: 0;">' + '        Heading:' + '     </h3>' + '     <input type="text" class="heading" maxlength="18" style="float: left; margin-top: -2px; margin-left: 5px; width: 60%">' + '  </div>' + '  <div class="detail-options" style="padding: 10px;">' + '     <input style="float: left" type="checkbox" onclick="noContactDetailHeading(this)"><p style="margin-top: -4px;">No Heading</p>' + '     <input style="float: left" type="checkbox" onclick="contactDetailIsLink(this)"><p style="margin-top: -4px;">Detail is Link</p>' + '     <input style="float: left" type="checkbox" onclick="contactDetailIsButton(this)"><p style="margin-top: -4px;">Detail is Button</p>' + '  </div>' + '  <h3 class="line-header">Lines:</h3>' + '  <div class="line-container">' + '     <input type="text" maxlength="24" style="width: 45%; border: 1px solid lightgrey; box-sizing: border-box; border: 2px solid #ccc; border-radius: 4px; font-size: 16px; background-color: white;padding: 7px; margin-bottom: 5px;" class="line">' + '     <a class="btn" onclick="addContactDetailLine(this)">+</a>' + '     <a class="btn" onclick="deleteContactDetailLine(this)">−</a>' + '     <a class="btn" onclick="moveUp(this)">↑</a>' + '     <a class="btn" onclick="moveDown(this)">↓</a>' + '  </div>' + '  <p class="disclaimer">* Lines have a 24 character limit for styling purposes</p>' + '  <a class="btn" onclick="addContactDetail(this)">Add Detail</a>' + '  <a class="btn" onclick="deleteContactDetail(this)">Delete</a>' + '  <a class="btn" onclick="moveUp(this)">Move Up</a>' + '  <a class="btn" onclick="moveDown(this)">Move Down</a>' + '</div>').insertAfter(button.parentNode);
+  };
+
+  this.deleteContactDetail = function(button) {
+    if (button.parentNode.parentNode.getElementsByClassName('detail').length - 1) {
+      $(button.parentNode).remove();
+    }
+  };
+
+  this.addContact = function(button) {
+    $('<div class="container champ-card" style="clear: both; width: 100%;">\n' + '  <h2 style="float: left;">\n' + '  Contact Name:\n' + '  </h2>\n' + '  <input type="text" style="float: left; margin-top: -2px; width: 45%; margin-left: 7px; box-sizing: border-box; border: 2px solid #ccc; border-radius: 4px; font-size: 16px; background-color: white;padding: 7px;" maxlength="100">\n' + '  <div class="detail champ-card" style="clear: both; position: relative">\n' + '    <div class="heading-container" style="width: 50%; float: left;">\n' + '      <h2 style="margin-top: 0;">\n' + '      Detail\n' + '      </h2>\n' + '      <h3 style="float: left; margin-top: 0;">\n' + '      Heading:\n' + '      </h3>\n' + '      <input type="text" class="heading" maxlength="18" style="float: left; margin-top: -2px; margin-left: 5px; width: 60%">\n' + '    </div>\n' + '    <div class="detail-options" style="padding: 10px;">\n' + '      <input style="float: left" type="checkbox" onclick="noContactDetailHeading(this)"><p style="margin-top: -4px;">No Heading</p>\n' + '      <input style="float: left" type="checkbox" onclick="contactDetailIsLink(this)"><p style="margin-top: -4px;">Detail is Link</p>\n' + '      <input style="float: left" type="checkbox" onclick="contactDetailIsButton(this)"><p style="margin-top: -4px;">Detail is Button</p>\n' + '    </div>\n' + '    <h3 class="line-header">Lines:</h3>\n' + '    <div class="line-container">\n' + '      <input type="text" maxlength="24" style="width: 45%; border: 1px solid lightgrey; box-sizing: border-box; border: 2px solid #ccc; border-radius: 4px; font-size: 16px; background-color: white;padding: 7px; margin-bottom: 5px;" class="line">\n' + '      <a class="btn" onclick="addContactDetailLine(this)">+</a>\n' + '      <a class="btn" onclick="deleteContactDetailLine(this)">−</a>\n' + '      <a class="btn" onclick="moveUp(this)">↑</a>\n' + '      <a class="btn" onclick="moveDown(this)">↓</a>\n' + '    </div> \n' + '    <p class="disclaimer">* Lines have a 24 character limit for styling purposes</p>' + '    <a class="btn" onclick="addContactDetail(this)">Add Detail</a>\n' + '    <a class="btn" onclick="deleteContactDetail(this)">Delete</a>\n' + '    <a class="btn" onclick="moveUp(this)">Move Up</a>\n' + '    <a class="btn" onclick="moveDown(this)">Move Down</a>\n' + '  </div>\n' + '  <a class="btn" onclick="addContact(this)">Add Contact</a>\n' + '  <a class="btn" onclick="deleteContact(this)">Delete</a>\n' + '  <a class="btn" onclick="moveUp(this)">Move Up</a>\n' + '  <a class="btn" onclick="moveDown(this)">Move Down</a>\n' + '</div>').insertAfter(button.parentNode);
+  };
+
+  this.deleteContact = function(button) {
+    if (button.parentNode.parentNode.getElementsByClassName('container').length - 1) {
+      $(button.parentNode).remove();
+    }
+  };
+
+  this.contactDetailIsLink = function(button) {
+    if (button.checked) {
+      $(button.parentNode.parentNode.getElementsByClassName('line-container')).remove();
+      button.parentNode.getElementsByTagName('input')[2].disabled = true;
+      button.parentNode.parentNode.getElementsByClassName('line-header')[0].innerHTML = 'Links:';
+      $('<div class="link-container champ-card" style="width: 100%; position: relative;"> <div class="link-details" style="float: left; width: 90%"> <h3 style="margin-bottom: 0; margin-top: 0;">Link Name:</h3> <input type="text" maxlength="23"> <h3 style="margin-bottom: 0;">Link Description:</h3> <input type="text"> <h3 style="margin-bottom: 0;">Location (URL):</h3> <input type="text"> </div> <div class="link-controls" style="width: 10%; padding: 3%; float: right;"> <a class="btn" style="margin: 17%;" onclick="addContactDetailLink(this)">+</a> <a class="btn" style="margin: 17%;" onclick="deleteContactDetailLink(this)">−</a> <a class="btn" style="margin: 17%;" onclick="moveContactLinkUp(this)">↑</a> <a class="btn" style="margin: 17%;" onclick="moveContactLinkDown(this)">↓</a> </div> <p>* For email addresses preface location with mailto: as such mailto:example@champlain.edu</p> </div>').insertAfter(button.parentNode.parentNode.getElementsByClassName('line-header')[0]);
+    } else {
+      $(button.parentNode.parentNode.getElementsByClassName('link-container')).remove();
+      button.parentNode.getElementsByTagName('input')[2].disabled = false;
+      button.parentNode.parentNode.getElementsByClassName('line-header')[0].innerHTML = 'Lines:';
+      $('<div class="line-container"> <input type="text" maxlength="24" style="width: 45%; border: 1px solid lightgrey; box-sizing: border-box; border: 2px solid #ccc; border-radius: 4px; font-size: 16px; background-color: white;padding: 7px; margin-bottom: 5px;" class="line"> <a class="btn" onclick="addContactDetailLine(this)">+</a> <a class="btn" onclick="deleteContactDetailLine(this)">−</a> <a class="btn" onclick="moveUp(this)">↑</a> <a class="btn" onclick="moveDown(this)">↓</a> </div>').insertAfter(button.parentNode.parentNode.getElementsByClassName('line-header')[0]);
+    }
+  };
+
+  this.addContactDetailLink = function(button) {
+    $('<div class="link-container champ-card" style="width: 100%; position: relative;"> <div class="link-details" style="float: left; width: 90%"> <h3 style="margin-bottom: 0; margin-top: 0;">Link Name:</h3> <input type="text" maxlength="23"> <h3 style="margin-bottom: 0;">Link Description:</h3> <input type="text"> <h3 style="margin-bottom: 0;">Location (URL):</h3> <input type="text"> </div> <div class="link-controls" style="width: 10%; padding: 3%; float: right;"> <a class="btn" style="margin: 17%;" onclick="addContactDetailLink(this)">+</a> <a class="btn" style="margin: 17%;" onclick="deleteContactDetailLink(this)">−</a> <a class="btn" style="margin: 17%;" onclick="moveContactLinkUp(this)">↑</a> <a class="btn" style="margin: 17%;" onclick="moveContactLinkDown(this)">↓</a> </div> <p>* For email addresses preface location with mailto: as such mailto:example@champlain.edu</p> </div>').insertAfter(button.parentNode.parentNode);
+  };
+
+  this.deleteContactDetailLink = function(button) {
+    if (button.parentNode.parentNode.parentNode.getElementsByClassName('link-container').length - 1) {
+      $(button.parentNode.parentNode).remove();
+    }
+  };
+
+  this.moveContactLinkUp = function(button) {
+    var prevElement;
+    prevElement = $(button.parentElement.parentElement).prev();
+    if ($(button.parentElement.parentElement).prop("tagName") === $(prevElement).prop("tagName")) {
+      $(button.parentElement.parentElement).detach().insertBefore(prevElement);
+    }
+  };
+
+  this.moveContactLinkDown = function(button) {
+    var nextElement;
+    nextElement = $(button.parentElement.parentElement).next();
+    if ($(button.parentElement.parentElement).prop("tagName") === $(nextElement).prop("tagName")) {
+      $(button.parentElement.parentElement).detach().insertAfter(nextElement);
+    }
+  };
+
+  this.contactDetailIsButton = function(button) {
+    console.log(button);
+    if (button.checked) {
+      $(button.parentNode.parentNode.getElementsByClassName('line-container')).remove();
+      button.parentNode.getElementsByTagName('input')[1].disabled = true;
+      button.parentNode.parentNode.getElementsByClassName('line-header')[0].innerHTML = 'Button:';
+      $('<div class="btn-container" style="width: 100%; position: relative;"> <h3 style="margin-bottom: 0; margin-top: 0;">Button Name:</h3> <input type="text" maxlength="18"> <h3 style="margin-bottom: 0;">Button Description:</h3> <input type="text"> <h3 style="margin-bottom: 0;">Location (URL):</h3> <input type="text"> <p>* Only one button per detail</p> </div>').insertAfter(button.parentNode.parentNode.getElementsByClassName('line-header')[0]);
+    } else {
+      $(button.parentNode.parentNode.getElementsByClassName('btn-container')).remove();
+      button.parentNode.getElementsByTagName('input')[1].disabled = false;
+      button.parentNode.parentNode.getElementsByClassName('line-header')[0].innerHTML = 'Lines:';
+      $('<div class="line-container"> <input type="text" maxlength="24" style="width: 45%; border: 1px solid lightgrey; box-sizing: border-box; border: 2px solid #ccc; border-radius: 4px; font-size: 16px; background-color: white;padding: 7px; margin-bottom: 5px;" class="line"> <a class="btn" onclick="addContactDetailLine(this)">+</a> <a class="btn" onclick="deleteContactDetailLine(this)">−</a> <a class="btn" onclick="moveUp(this)">↑</a> <a class="btn" onclick="moveDown(this)">↓</a> </div>').insertAfter(button.parentNode.parentNode.getElementsByClassName('line-header')[0]);
+    }
   };
 
 }).call(this);

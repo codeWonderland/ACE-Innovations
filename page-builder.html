@@ -7,10 +7,11 @@
 <p>You can paste that HTML into Ingeniux and then include the client side script component that is appropriate for the situation</p>
 <p>Note: For each page you must insert appropriate component from '/Internal Components/Client Side Script Components/Alice'</p><br /><br />
 <select id="type-of-page">
-    <option disabled="disabled" selected="selected" value=""> - - Type of Page - - </option>
-    <option value="video">Video Page</option>
+    <option disabled="disabled" selected="selected"> - - Type of Page - - </option>
+    <option value="contact-book">Contact Book</option>
     <option value="timeline">Timeline Page</option>
     <option value="vert-timeline">Vertical Timeline Page</option>
+    <option value="video">Video Page</option>
 </select>
 <br /><br />
 <textarea id="html" placeholder="Place HTML Here..."></textarea>
@@ -27,20 +28,19 @@
             </div> <!-- .events-wrapper -->
 
             <ul class="timeline-navigation">
-                <li><a href="#0" class="prev inactive">Prev</a></li>
-                <li><a href="#0" class="next">Next</a></li>
+                <li><a class="prev inactive">Prev</a></li>
+                <li><a class="next">Next</a></li>
             </ul> <!-- .timeline-navigation -->
         </div> <!-- .timeline -->
 
         <div class="events-content">
             <ol>
-
                 <!--
-                <li data-date="01/01/yyyy">
-                    <h2>yyyy</h2>
+                   <li data-date="01/01/yyyy">
+                       <h2>yyyy</h2>
 
-                </li>
-                -->
+                   </li>
+                   -->
             </ol>
         </div> <!-- .events-content -->
     </section>
@@ -55,5 +55,20 @@
         <div id="preview-container"></div>
     </div>
     <br /><br />
+</div>
+<div id="contact-book-html" style="display: none;">
+    <input id="office-search" data-autofirst="true" type="text" name="search" placeholder="Search..">
+    <div id="contact-book">
+        <img id="book" src="images/ace/contact-book.png" />
+        <div id="pages">
+            <div id="page-1"></div>
+            <div id="page-2"></div>
+        </div>
+        <!--Database of offices-->
+        <div id="contact-list"></div>
+    </div>
+    <div class="mobile-dir">
+        <div class="contact-container"></div>
+    </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
