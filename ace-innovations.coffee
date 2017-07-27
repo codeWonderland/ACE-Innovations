@@ -313,6 +313,7 @@ $('#parse').on "click", ->
   return
 
 # Todo pre, post, purpose
+
 @buildContactBookHTML = ->
   contactHTML = document.getElementById('contact-book-html')
   contacts = document.getElementsByClassName('container')
