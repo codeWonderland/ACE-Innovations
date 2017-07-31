@@ -312,8 +312,11 @@ $('#parse').on "click", ->
   document.getElementById("output-html").value = timelineHTML.innerHTML
   return
 
-# Todo pre, post, purpose
 
+#Pre: this function is called when someone clicks the build html button at the bottom of a contact book page
+#Post: parses the data on the screen and outputs it in html format in the text box below
+#Purpose: this function is meant to take the newly manipulated contact book and turn it into a format of
+#HTML compatible with ACE-Contact Book standards
 @buildContactBookHTML = ->
   contactHTML = document.getElementById('contact-book-html')
   contacts = document.getElementsByClassName('container')
